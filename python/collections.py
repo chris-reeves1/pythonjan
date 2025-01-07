@@ -64,7 +64,7 @@
 
 # {}
 
-drinks = {"fizzy": "sprite", "still": "water", "juice": "orange"}
+#drinks = {"fizzy": "sprite", "still": "water", "juice": "orange"}
 
 # direct access
 
@@ -93,5 +93,19 @@ drinks = {"fizzy": "sprite", "still": "water", "juice": "orange"}
 #a STRING of the books by the author. (NOT A LIST).
 #consider if the user inputs incorect username. 
 
+# tuples
 
+#recactangle = 10, 5
 
+#recactangle[0] = 15
+
+# sets
+
+#set1 = {1, 2, 3, 4, 5}
+#set2 = {4, 5, 6, 7, 8}
+
+#print(set1.union(set2))
+
+#print(set1.intersection(set2))
+
+#print(set1.difference(set2))
