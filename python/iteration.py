@@ -96,3 +96,34 @@ for i, j in {"Still":"water"}.items():
 # for loop
 # list comp
 # optional - 1 line list comp!! 
+
+# while loop
+
+#counter = 0
+#while counter < 5:
+ #   name = input("Enter a name:")
+ #   print(name + " is cool")
+ #   counter +=1 
+
+# for loop
+#
+#for x in range(5):
+ #   name = input("Enter a name:")
+ #   print(name + " is cool")
+
+# list comp
+
+#names = [input("enter name:") for name in range(5)]
+#for name in names:
+#    print(f"{name} is cool")
+
+# combined list comp
+
+#inner list
+#[input("enter names: ") for x in range(5)]
+# outer list
+#[print(f"{name} is cool") for name in iterable]
+
+#x = [print(f"{name} is cool") for name in [input("enter names: ") for x in range(5)]]
+
+#print(x)
