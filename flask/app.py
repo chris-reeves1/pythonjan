@@ -4,7 +4,7 @@ from password_checker import PasswordChecker
 
 app = Flask(__name__)
 
-def save_to_db():
+def save_to_db(password, rating):
     conn = sqlite3.connect("passwords.db")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO history (password, rating) VALUES (?, ?)", (password, rating))
