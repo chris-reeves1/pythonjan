@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Password History</title>
+</head>
+<body>
+    <h1>Password history</h1>
+    <table border="1">
+        <tr>
+            <th>Password</th>
+            <th>Rating</th>
+        </tr>
+        {% for password, rating in history %}
+        <tr>
+            <td>{{ password }}</td>
+            <td>{{ rating }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">Go back</a>
+</body>
+</html>
