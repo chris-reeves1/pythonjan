@@ -1,0 +1,271 @@
+IF STATEMENT
+------------
+
+An if statement executes a block of code if its condition evaluates to being true.
+
+Syntax:
+
+if (condition){
+    code to execute
+}
+
+Example:
+
+int num = 10;
+if (number > 0){
+    System.out.println("The number is greater than 0");
+}
+
+IF-ELSE STATEMENT
+-----------------
+
+Else provides an alternative block of code if the condition is false.
+
+Syntax:
+
+if (condition){
+    code to execute if true
+} else {
+    code to execute if false
+}
+
+example:
+
+int num = 5;
+
+if (number > 0) {
+    System.out.println("The number is greater than 0.");
+} else {
+    System.out.println("The number is not greater than 0.");
+}
+
+ELSE-IF
+-------
+
+Multiple conditions can be tested in sequence.
+
+
+Syntax:
+
+if (condition1) {
+    // Code to execute if condition1 is true
+} else if (condition2) {
+    // Code to execute if condition2 is true and condition1 is false
+} else {
+    // Code to execute if none of the above conditions are true
+}
+
+Example: 
+
+int number = 0;
+if (number > 0) {
+    System.out.println("The number is positive.");
+} else if (number < 0) {
+    System.out.println("The number is negative.");
+} else {
+    System.out.println("The number is zero.");
+}
+
+TERNARY/CONDITIONAL OPERATOR
+----------------------------
+
+Use this for simple, single line conditionals. The "?" symbol is
+just a stand-in for if and else. It is best when used to assign a single value.
+Avoid making complex ternary operators!! If the logic needs to execute more than 
+one statment use regular if else. 
+
+Syntax:
+
+variable = (condition) ? valueIfTrue : valueIfFalse;
+
+Example:
+
+int number = 10;
+String result = (number > 0) ? "Positive" : "Negative";
+System.out.println(result);
+
+Avoid this:
+
+String result = !(a > b) ? (b > c ? "B is greater than c" : "C is greater than b") : "A is largest";
+
+Return any data type:
+
+int number = -5;
+int absoluteValue = (number < 0) ? -number : number;
+System.out.println(absoluteValue); 
+
+Performing mathematical operations:
+
+int number = 9;
+int squareOrDouble = (number % 2 == 0) ? number * number : number * 2;
+System.out.println(squareOrDouble); // Outputs: 18
+
+Calling a method (method could create an object):
+
+public static int doubleValue(int x) {
+    return x * 2;
+}
+
+public static int squareValue(int x) {
+    return x * x;
+}
+
+int number = 4;
+int result = (number % 2 == 0) ? doubleValue(number) : squareValue(number);
+System.out.println(result);
+
+NESTED STATEMENTS
+-----------------
+
+int number = 10;
+if (number > 0) {
+    if (number % 2 == 0) {
+        System.out.println("The number is positive and even.");
+    } else {
+        System.out.println("The number is positive and odd.");
+    }
+} else {
+    System.out.println("The number is not positive.");
+}
+
+Note...!!!:
+
+Without {} after the if statement only the immediate next statement 
+is considered part of the conditional.
+
+if (number > 0) 
+    System.out.println("Positive");
+    System.out.println("Always printed"); -- This will run regardless of the condition.
+
+LOGICAL OPORATORS
+-----------------
+
+Allows for multiple conditions to be evaluated. 
+
+&& - both conditions must be true:
+
+int age = 25;
+boolean hasLicense = true;
+
+if (age >= 18 && hasLicense) {
+    System.out.println("You are eligible to drive.");
+} else {
+    System.out.println("You are not eligible to drive.");
+}
+
+|| - one condition must be true:
+
+boolean isWeekend = true;
+boolean isHoliday = false;
+
+if (isWeekend || isHoliday) {
+    System.out.println("You can relax today.");
+} else {
+    System.out.println("It's a workday.");
+}
+
+Note both will shortcurcuit when logically determined. 
+
+SWITCH STATEMENT
+----------------
+
+This is similar to if-else-if and allows many possible blocks of code to execute. 
+The condition must evaluate to either int, byte, short, char or String. 
+The default block is optional. 
+
+Syntax: 
+
+switch (expession){
+    case value1:
+        execute code;
+        break;
+    case value2:
+        execute code;
+        break;
+    default:
+        execute if no cases matched. 
+}
+
+Example:
+
+int day = 3;
+switch (day) {
+    case 1:
+        System.out.println("Monday");
+        break;
+    case 2:
+        System.out.println("Tuesday");
+        break;
+    case 3:
+        System.out.println("Wednesday");
+        break;
+    default:
+        System.out.println("Other day");
+}
+
+Omitting break in a switch statement will cause 
+fall-thorugh and continue to execute blocks regardless of its expression.
+Why would we want this?
+- Has its origins in C and allows for multiple cases to share logic, avoiding
+repetition.
+- Therefore backwards compatibility.
+- flexibility and efficiancy/performance optimization.  
+- allows for sequential actions to be triggered
+- If java version doesnt allow fall-through use:
+
+    String result = switch (grade) {
+    case 'A', 'B' -> "Great job!";
+    case 'C' -> "Good effort.";
+    default -> "Needs improvement.";
+    };
+    System.out.println(result);
+
+Switch statements should be used when the variable has a limited number of
+known, discrete values. 
+
+When not to use:
+
+- To evaluate conditions like x > 1
+- If values might change  (are dynamic)
+- Cant use floats or doubles. 
+
+Notes:
+- if fall through is intended add comments to make this clear.
+- Default although optional is helpful for unexpected values (or logging)
+- Combine cases if they use the same logic:
+        eg;
+            case 6:
+            case 7:
+                System.out.println("Weekend");
+                break;
+
+Differeneces in c#
+- Ternary operator has null-coalescing with ?? and multi-line
+  operations do not need ().
+- switch statements support all data types.  
+- fall-through is not allowed by default. 
+- default can be anywhere in java, c# is has to be last. 
+
+Note on conditional with ==:
+----------------------------
+
+        String input = "Yes";
+if (input == "Yes") {  // Incorrect
+    System.out.println("Correct!");
+}
+if (input.equals("Yes")) {  // Correct
+    System.out.println("Correct!");
+}
+
+String input1 = new String("Yes"); // Dynamically creates a new string object
+if (input1 == "Yes") { // Compares references
+    System.out.println("Correct!");
+} else {
+    System.out.println("Incorrect!");
+}
+
+if (input.equals("Yes")) { // Compares content
+    System.out.println("Correct!");
+}
+
+
