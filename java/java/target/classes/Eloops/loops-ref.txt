@@ -1,0 +1,133 @@
+WHILE LOOP
+----------
+
+Repeatedly executes a block of code whilst a condition is true. The loop will not
+trigger if the condition is never true.
+
+int i = 1;
+while (i <= 5) {
+    System.out.println("Count: " + i);
+    i++;
+}
+
+DO-WHILE LOOP
+-------------
+
+The code block is executed at least once even if the associate condition is
+not true.
+
+int i = 1;
+do {
+    System.out.println("Count: " + i);
+    i++;
+} while (i <= 5);
+
+Useful for:
+- Input validation:
+    import java.util.Scanner;
+
+    Scanner scanner = new Scanner(System.in);
+    int number;
+
+    do {
+        System.out.print("Enter a positive number: ");
+        number = scanner.nextInt();
+        } 
+    while (number <= 0);
+
+    System.out.println("You entered: " + number);
+
+- printing menus:
+    import java.util.Scanner;
+
+    Scanner scanner = new Scanner(System.in);
+    int choice;
+
+    do {
+        System.out.println("1. Add");
+        System.out.println("2. Subtract");
+        System.out.println("3. Exit");
+        System.out.print("Enter your choice: ");
+        choice = scanner.nextInt();
+
+    switch (choice) {
+        case 1:
+            System.out.println("You chose Add.");
+            break;
+        case 2:
+            System.out.println("You chose Subtract.");
+            break;
+        case 3:
+            System.out.println("Exiting...");
+            break;
+        default:
+            System.out.println("Invalid choice.");
+    }
+    } 
+    while (choice != 3);
+
+FOR LOOP
+--------
+
+For when we know the number of iterations we will want:
+
+Include: 
+- initialization (sets the starting point for the loop)
+- Condition (evaluated before each loop)
+- increment/decrement (changes the loop variable after each iteration)
+
+for (initialization; condition; increment/decrement) {
+}
+
+for (int i = 1; i <= 5; i++) {
+    System.out.println("Count: " + i);
+}
+
+ENHANCED FOR LOOP
+-----------------
+
+Designed to iterate through collections/arrays/objects, without 
+using an index (automatically iterates through each element).
+
+for (type element : collection/array) {
+}
+
+int[] numbers = {1, 2, 3, 4, 5};
+for (int number : numbers) {
+    System.out.println("Number: " + number);
+}
+
+Use foreach in c#!
+
+INFINITE LOOPS
+--------------
+
+Will loop until a condition is met to break it. 
+
+while (true){}
+or..
+for(;;){}
+
+BREAK AND CONTINUE
+------------------
+
+Break: immediately exits the loop.
+Continue: Skips the current iteration. 
+
+for (int i = 1; i <= 10; i++) {
+    if (i == 5) break; // Exit the loop when i equals 5
+    System.out.println(i);
+}
+
+for (int i = 1; i <= 5; i++) {
+    if (i == 3) continue; // Skip when i equals 3
+    System.out.println(i);
+}
+
+NESTED LOOPS
+------------
+
+for (int i = 1; i <= 3; i++) {
+    for (int j = 1; j <= 3; j++) {
+        System.out.println("i = " + i + ", j = " + j);
+    }
