@@ -62,7 +62,7 @@ Immutable Example:
 
 
 Best Practices When Defining Types and Creating Objects
--	Encapsulation: Use private fields and provide getters/setters.
+-	Encapsulation: Use private fields and provide public getters/setters.
 -	Avoid Magic Numbers: Always initialize objects to meaningful defaults.
 -	Use Meaningful Names.
 
