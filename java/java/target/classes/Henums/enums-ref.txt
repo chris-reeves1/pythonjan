@@ -1,0 +1,233 @@
+ENUMS
+-----
+
+Enums in Java are a special data type that allows you to define a set of 
+predefined constants. 
+These constants are implicitly public, static, and final.
+
+Example:
+
+    public enum Day {
+        MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+    }
+
+Why Use Enums:
+
+Enums provide several advantages:
+- Type Safety:
+	Enums check to ensure that only valid values are used.
+
+Example:
+
+    public void printDay(Day day) {
+        System.out.println("The day is: " + day);
+    }
+
+    printDay(Day.MONDAY); // Valid
+    // printDay(5);       // Invalid, won't compile
+
+- Readability and Maintainability
+	Using enums makes your code easier to read and maintain because the constants are logically grouped and self-documenting.
+
+Example:
+
+    Day today = Day.FRIDAY;
+    System.out.println("Today is: " + today);
+
+- Avoid Magic Numbers and Strings
+	Enums eliminate the need for "magic numbers" or hardcoded String values in your code.
+
+Example:
+
+    // Without enums
+    int RED = 1;
+    int GREEN = 2;
+    int BLUE = 3;
+
+    int color = RED;
+
+    // With enums
+    public enum Color {
+        RED, GREEN, BLUE
+    }
+
+    Color color = Color.RED;
+
+- Built-in Methods
+	Enums come with useful built-in methods like:
+	values() to get all enum constants.
+	valueOf(String name) to convert a String to an enum constant.
+
+Example:
+
+    for (Day day : Day.values()) {
+        System.out.println(day);
+    }
+
+    Day day = Day.valueOf("MONDAY");
+    System.out.println("Day is: " + day);
+
+
+
+- Ability to Add Fields and Methods
+	Enums in Java can have fields, methods, and constructors, making them more powerful than simple constants.
+
+Example:
+
+    public enum Level {
+        LOW(1),
+        MEDIUM(2),
+        HIGH(3);
+
+        private int severity;
+
+        Level(int severity) {
+            this.severity = severity;
+        }
+
+        public int getSeverity() {
+            return severity;
+        }
+    }
+
+    Level level = Level.HIGH;
+    System.out.println("Severity: " + level.getSeverity());
+
+- Better Integration with Switch Statements
+	Enums can be used in switch statements, making it easier to handle multiple cases.
+
+Example:
+
+Day today = Day.FRIDAY;
+
+    switch (today) {
+        case MONDAY -> System.out.println("Start of the work week!");
+        case FRIDAY -> System.out.println("Almost the weekend!");
+        case SUNDAY -> System.out.println("Relax, it's Sunday!");
+        default -> System.out.println("Midweek day.");
+    }
+
+When to Use Enums:
+- You have a fixed set of related constants (e.g., days of the week, directions, states).
+- You need type safety for these constants.
+- You want to encapsulate related data or behavior for each constant.
+
+Limitations
+- Enums can't extend other classes because they implicitly extend java.lang.Enum.
+- They are more heavyweight than simple constants, so use them where appropriate.
+
+When Not to Use Enums:
+- When the set of values might change often (use a database or configuration file instead).
+
+Note Enums in c# do not support methods or fields. 
+
+STRINGS
+-------
+
+Strings in Java are one of the most commonly used data types.
+
+Immutability:
+
+A String in Java is immutable, meaning once a String object is created, its value cannot be changed. 
+Any operation that seems to modify a String (like concatenation or replacement) actually creates a new String object.
+
+Why Are Strings Immutable:
+- Thread Safety
+- String Pool Optimization
+- Security
+
+Example:
+
+	String str = "Hello";
+	str.concat(" World"); // Concatenation creates a new string, but 'str' remains unchanged.
+	System.out.println(str); // Outputs: "Hello"
+	
+	String newStr = str.concat(" World"); // Assign the result to a new variable.
+	System.out.println(newStr); // Outputs: "Hello World"
+
+Why Strings Are Not Primitives:
+- Complexity Beyond a Primitive
+- Flexibility with Classes
+- Memory Optimization via String Pool
+
+Example:
+
+    String a = "hello";
+    String b = "hello";
+    System.out.println(a == b); // true, both point to the same object in the pool
+
+Methods for String Manipulation
+
+Comparison:
+- equals(): Compares content.
+- ==: Compares references.
+- compareTo(): Lexicographically compares two strings.
+
+Transformation:
+- toUpperCase(), toLowerCase(), trim()
+
+Search:
+- indexOf(), lastIndexOf(), contains()
+
+Substrings:
+- substring(beginIndex, endIndex)
+
+Splitting and Joining:
+- split(String regex) and join(CharSequence delimiter, CharSequence... elements)
+
+Null vs Empty Strings:
+- An empty string ("") is a valid string with no characters.
+- A null string is the absence of a string (no memory allocated).
+
+Example:
+
+    String empty = "";
+    String nullStr = null;
+
+    System.out.println(empty.isEmpty()); // true
+    System.out.println(nullStr == null); // true
+
+String == and .equals() Behavior:
+String ==
+- The == operator compares references (memory locations), not the actual content of the strings.
+- If two strings point to the same memory location (e.g., from the string pool), == will return true. Otherwise, it will return false.
+
+Example:
+
+    String a = "hello";
+    String b = "hello";
+    System.out.println(a == b); // true, both point to the same object in the string pool
+
+    String c = new String("hello");
+    System.out.println(a == c); // false, c refers to a different object outside the pool
+
+String .equals()
+- The .equals() method compares the content of two strings, regardless of whether they are stored in the same memory location.
+
+Example:
+
+    String a = "hello";
+    String c = new String("hello");
+    System.out.println(a.equals(c)); // true, content is the same
+
+
+StringBuilder:
+
+- Strings are immutable in Java, so concatenating strings repeatedly creates new objects, which can be inefficient.
+- StringBuilder is a mutable class that allows efficient string manipulation.
+
+Basic Methods
+- append(String str): Appends the string to the current object.
+- insert(int offset, String str): Inserts a string at a specific position.
+- delete(int start, int end): Deletes characters from start to end (exclusive).
+- replace(int start, int end, String str): Replaces characters from start to end with a string.
+- reverse(): Reverses the sequence of characters.
+
+Example:
+
+    StringBuilder sb = new StringBuilder("Hello");
+    sb.append(" World"); // Appends " World"
+    sb.insert(5, ",");   // Inserts a comma after "Hello"
+    sb.replace(0, 5, "Hi"); // Replaces "Hello" with "Hi"
+    sb.reverse();        // Reverses the string
+    System.out.println(sb.toString()); // Output: "dlroW ,iH"
