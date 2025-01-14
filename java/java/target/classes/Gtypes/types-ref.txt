@@ -1,0 +1,975 @@
+TYPES
+-----
+
+There are two types of objects in jave:
+- primitive types
+- reference types
+
+The difference between them:
+- What type of data they hold
+- What actions can be performed on that data 
+
+Defining classes allows you to make your own custom types:
+
+    public class Person {
+        // Fields (state of the object - discussed later)
+        String name;
+        int age;
+        // Methods (behavior of the object)
+        public void introduce() {
+            System.out.println("Hi, my name is " + name + " and I am " + age + " years old.");
+        }
+    }
+
+Objects are instances of classes and can be made using the ‘new’ keyword:
+
+    public class Main {
+        public static void main(String[] args) {
+            // Create an object of the Person class
+            Person person1 = new Person();
+            // Access and modify fields
+            person1.name = "Alice";
+            person1.age = 30;
+            // Call a method
+            person1.introduce();
+        }
+    }
+
+The object variables store references, not the actual data,
+Use the dot operator (.) to access fields and methods:
+
+    Person person2 = person1; // Both refer to the same object
+    person2.name = "Bob";
+
+    person1.introduce(); // Output: Hi, my name is Bob and I am 30 years old.
+
+Objects can have null references if they aren't initialized:
+
+    Person person3 = null;
+    // person3.introduce(); // This will throw a NullPointerException.
+
+
+
+IMMUTABLE VS. MUTABLE OBJECTS
+-----------------------------
+-	Immutable: Once created, cannot be changed (e.g., String).
+-	Mutable: Can be modified (e.g., custom objects like Person).
+
+Immutable Example:
+
+    String name = "John";
+    name = name.toUpperCase(); // Creates a new String object.
+
+
+Best Practices When Defining Types and Creating Objects
+-	Encapsulation: Use private fields and provide getters/setters.
+-	Avoid Magic Numbers: Always initialize objects to meaningful defaults.
+-	Use Meaningful Names.
+
+full example:
+
+    package com.typesone;
+
+    public class Main {
+    public static void main(String[] args) {
+        // Create an object of the Person class
+        Person person1 = new Person();
+        // Access and modify fields
+        person1.name = "Alice";
+        person1.age = 30;
+        // Call a method
+        person1.introduce();
+
+        Person person2 = person1; // Both refer to the same object
+        person2.name = "Bob";
+
+        person1.introduce(); // Output: Hi, my name is Bob and I am 30 years old.
+
+        Person person3 = null;
+        //person3.introduce(); // This will throw a NullPointerException.
+
+        person1.setAge(55);
+        person1.setName("Smith");
+        person1.getName();
+        person2.getAge();
+        person1.introduce();
+    }
+    }
+
+
+    class Person {
+        // Fields (state of the object - discussed later)
+        String name;
+        int age;
+        // Methods (behavior of the object)
+        public void introduce() {
+            System.out.println("Hi, my name is " + name + " and I am " + age + " years old.");
+            }
+
+        // Getter for name
+        public String getName() {
+            return name;
+        }
+
+        // Setter for name
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        // Getter for age
+        public int getAge() {
+            return age;
+        }
+
+        // Setter for age
+        public void setAge(int age) {
+            if (age > 0) { // Validation
+                this.age = age;
+            }
+        }
+
+        }
+
+MEMORY
+------
+eg:
+
+    Person person1 = new Person();
+    person1.name = "John";
+    person1.age = 30;
+
+    Person person2 = person1;
+    person2.age = 40;
+
+Heap Memory:
+-  A single Person object exists, with fields:
+       name: "John"
+       age: 40 (updated by person2).
+Stack Memory:
+- person1 and person2 both point to the same heap object (e.g., 0x1a2b).
+
+
+COMPARING OBJECTS WITH == or EQUALS()
+-------------------------------------
+
+==
+
+For primitives (e.g., int, char, boolean), == checks if the values are the same:
+
+    int a = 5;
+    int b = 5;
+    System.out.println(a == b); // true (values are equal)
+
+
+For objects, == checks if both variables point to the same object in memory:
+
+    Person person4 = new Person();
+    Person person5 = person4;
+    System.out.println(person4 == person5); // true (same reference)
+
+    Person person6 = new Person();
+    System.out.println(person4 == person6); // false (different references)
+
+Equals:
+
+The .equals() method is used to compare the content or state of objects.
+By default, .equals() checks reference equality (same as ==), but can be overridden.
+
+Default Behavior (without overriding):
+
+    Person person1 = new Person();
+    Person person2 = new Person();
+    System.out.println(person1.equals(person5)); // false (default behavior, compares references)
+
+Overridden Behavior:
+Classes like String, Integer, and List override .equals() to compare content:
+
+    String str1 = new String("Hello");
+    String str2 = new String("Hello");
+    System.out.println(str1.equals(str2)); // true (content is the same)
+
+
+REFERENCE REASSIGNMENT
+----------------------
+
+If you reassign a reference variable, it does not affect other references to 
+the same object:
+
+    Person person1 = new Person();
+    Person person2 = person1; // Both point to the same object
+
+    person2 = new Person(); // Reassign person2 to a new object
+
+GARBAGE COLLECTION AND REFERENCES
+---------------------------------
+
+When no references point to an object, it becomes eligible for 
+garbage collection:
+
+    Person person = new Person();
+    person = null; // Original object is eligible for garbage collection
+    
+The JVM reclaims the memory used by unreachable objects.
+
+SHARED REFERENCES
+-----------------
+
+Be cautious, changes through one reference affect all:
+
+    Person person1 = new Person();
+    Person person2 = person1;
+    person2.name = "Modified";
+    System.out.println(person1.name); // Modified
+
+
+Encapsulation
+-------------
+
+Encapsulation is the concept of restricting direct access to fields and methods
+of a class.
+
+Purpose:
+- Protect the object's internal state.
+- Control how the data is accessed with access modifiers.
+- Modularity and maintainability.
+
+Key Features:
+- Private Fields: Prevent direct access to the fields.
+- Getters/Setters: Provide controlled access.
+
+Example:
+
+    public class PersonOne {
+        private String name; // Private field
+
+        // Getter method
+        public String getName() {
+            return name;
+        }
+
+        // Setter method
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+ABSTRACTION
+-----------
+	
+Abstraction is the process of hiding the implementation details of an object.
+
+Purpose:
+- Reduce complexity by focusing on high-level functionality.
+- Allow developers to use objects without knowing their inner workings.
+
+Implementation:
+- Abstract Classes: Provide a base structure.
+- Interfaces: Define a contract for behavior.
+
+Key Considerations When Defining Reference Types in Java:
+
+A well-defined reference type ensures efficient memory management, 
+maintainable code, and clarity of intent.
+
+When defining reference types, ensure:
+- Clear purpose and single responsibility.
+- Proper encapsulation with private fields and controlled access.
+- Logical equality defined with .equals()
+- Thoughtful memory usage and mutability decisions.
+- Appropriate use of inheritance, composition, and interfaces. 
+- Maintainable code with good documentation and testing.
+
+COMPOSITION
+-----------
+
+Without Composition (Using Inheritance):
+
+    public class Engine {
+        public void start() {
+            System.out.println("Engine started.");
+        }
+    }
+
+    public class Car extends Engine {
+        // Inherits start() from Engine
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Car car = new Car();
+            car.start(); // Engine started.
+        }
+    }
+
+Here Inheritance creates an unnatural hierarchy - a car is not 
+an engine, an engine is not a car.
+
+With Composition:
+
+    public class Engine {
+        public void start() {
+            System.out.println("Engine started.");
+        }
+    }
+
+    public class Car {
+        private Engine engine; // Composition: Car "has-an" Engine
+
+        // Constructor
+        public Car(Engine engine) {
+            this.engine = engine;
+        }
+
+        public void startCar() {
+            engine.start(); // Delegating behavior to Engine
+            System.out.println("Car is running.");
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Engine engine = new Engine();
+            Car car = new Car(engine);
+            car.startCar();
+            // Output:
+            // Engine started.
+            // Car is running.
+        }
+    }
+
+Benefits of Composition
+
+- encapsulate specific behavior in separate classes, keeping the code modular and maintainable.
+- Flexibility, the composed objects can be replaced at runtime.
+- Prevents tight coupling, unlike inheritance.
+- Promotes code reuse in different contexts.
+
+STATE
+-----
+An object's state is determined by its fields (their values at a 
+particular moment in time).
+
+
+    public class Person {
+        String name;  // Field
+        int age;      // Field
+    }
+
+    Person person = new Person();
+    person.name = "Alice"; // State: name = "Alice", age = 0
+    person.age = 30;       // State: name = "Alice", age = 30
+
+
+Accessing and Modifying State:
+- Accessors (Getters) - Methods used to retrieve the current state of an object.
+- Mutators (Setters): Methods used to modify the state of an object.
+
+Immutable Objects and State:
+
+Some objects have immutable states, meaning their fields cannot be changed once initialized. 
+This is achieved by:
+- Declaring fields as final.
+- Avoiding setters and allowing initialization only through constructors.
+
+State Representation in Memory:
+
+- Fields are stored in the heap, where the object's memory resides.
+- Each instance of a class maintains its own state independent of other instances.
+
+Invalid States and Validation:
+
+A well-designed class prevents its objects from entering invalid states by:
+- Using validation logic in setters or constructors.
+- Encapsulating fields to restrict direct access.
+
+Example:
+
+    public class BankAccount {
+        private double balance;
+
+        public void deposit(double amount) {
+            if (amount > 0) {
+                balance += amount;
+            } else {
+                throw new IllegalArgumentException("Deposit amount must be positive.");
+            }
+        }
+
+        public void withdraw(double amount) {
+            if (amount > 0 && amount <= balance) {
+                balance -= amount;
+            } else {
+                throw new IllegalArgumentException("Invalid withdrawal amount.");
+            }
+        }
+    }
+
+CONSTRUCTORS
+------------
+
+A constructor is a block of code called when an object is created.
+It initializes the object with default or specific values.
+
+A constructor has:
+- The same name as the class.
+- No return type, not even void.
+
+Needed for:
+- Object Initialization:
+	Assign values to fields at the time of object creation.
+- Encapsulation of Setup Logic:
+	Centralize initialization logic for an object.
+- Mandatory Initialization:
+	Enforce that certain fields are always initialized, avoiding invalid states.
+
+Example:
+    
+    public class Person {
+        String name;
+        int age;
+
+        // Constructor
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Person person = new Person("Alice", 25); // Constructor initializes fields
+        }
+    }
+
+Default Constructor:
+
+If you don't explicitly define a constructor, Java provides a default constructor.
+The default constructor:
+- Takes no parameters.
+- Initializes fields to their default values (0 for numbers, null for objects, false for booleans).
+- Is only used if no other constructor is defined.
+
+Example: 
+
+    public class Person {
+        String name;
+        int age;
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Person person = new Person(); // Uses the default constructor
+            System.out.println(person.name); // null
+            System.out.println(person.age);  // 0
+        }
+    }
+
+Constructor Overloading:
+
+You can define multiple constructors in a class with different parameter lists.
+This allows you to initialize objects in various ways.
+
+Example:
+
+    public class Person {
+        String name;
+        int age;
+
+        // No-argument constructor
+        public Person() {
+            this.name = "Unknown";
+            this.age = 0;
+        }
+
+        // Parameterized constructor
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        // Single-parameter constructor
+        public Person(String name) {
+            this.name = name;
+            this.age = 18; // Default age
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Person p1 = new Person();             // Uses no-argument constructor
+            Person p2 = new Person("Alice", 25); // Uses parameterized constructor
+            Person p3 = new Person("Bob");       // Uses single-parameter constructor
+        }
+    }
+
+Constructor Chaining:
+
+Constructor chaining occurs when one constructor calls another constructor 
+in the same class or the parent class.
+
+Within the Same Class:
+    Use this() to call another constructor in the same class.
+
+From a Parent Class:
+    Use super() to call the constructor of the parent class.
+
+Example:
+
+    public class Person {
+        String name;
+        int age;
+
+        // Constructor 1: No-argument
+        public Person() {
+            this("Unknown", 0); // Calls Constructor 2
+        }
+
+        // Constructor 2: Parameterized
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Person person = new Person(); // Calls Constructor 1, which calls Constructor 2
+        }
+    }
+
+From parent class:
+
+    public class Employee extends Person {
+        String position;
+
+        public Employee(String name, int age, String position) {
+            super(name, age); // Calls the constructor of Person
+            this.position = position;
+        }
+    }
+
+Best Practices for Using Constructors:
+- Always Initialize Fields:
+    Ensure all required fields are initialized in every constructor.
+- Use Chaining for Code Reuse:
+    Avoid duplicating initialization logic by chaining constructors.
+- Validate Inputs:
+    Add checks in constructors to prevent invalid states.
+- Favor Parameterized Constructors Over Default:
+    Avoid leaving objects in a partially initialized state by relying on setters.
+- Combine with Factory Methods:
+    For complex initialization, consider using static factory methods.
+
+FACTORY METHODS
+---------------
+
+A factory method returns an instance of a class. 
+
+Purpose:
+- Decouple object creation from the main application logic.
+- Allow flexible creation of objects, possibly based on some conditions or input.
+- Improve code readability and maintainability.
+
+Example:
+
+    public class Person {
+        private String name;
+        private int age;
+
+        // Private constructor to restrict direct instantiation
+        private Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        // Factory method
+        public static Person createChild(String name) {
+            return new Person(name, 10); // Default age for children
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Person child = Person.createChild("Alice"); // Factory method usage
+        }
+    }
+
+Why Use Factory Methods:
+- Encapsulation of Object Creation
+- Flexible Instantiation
+- Better Code Readability
+- Avoid Constructor Overloading Confusion
+- Improve Testability
+
+Disadvantages of Factory Methods
+- Increased Complexity
+- Debugging Difficulty
+- Overhead
+
+STATIC FIELDS
+-------------
+
+A static field is a variable declared with the static keyword. 
+It is shared among all instances of the class.
+
+Example: 
+
+    public class Counter {
+        public static int count = 0; // Static field
+
+        public Counter() {
+            count++; // Increment the static field
+        }
+    }
+
+Static fields are typically used for:
+- Shared State:
+	Fields that represent shared data across all instances of the class.
+- Constants:
+	Fields that remain constant and are the same for all instances.
+
+Static fields can be accessed:
+- Directly via the Class Name:
+    This is the recommended approach when no specific instance is needed.
+- Through an Instance:
+	This is allowed but discouraged.
+
+Example:
+
+    public class Main {
+        public static void main(String[] args) {
+            // Accessing static field directly via class name
+            System.out.println(Counter.count); // Output: 0
+
+            // Creating objects and modifying the static field
+            new Counter();
+            new Counter();
+            System.out.println(Counter.count); // Output: 2
+
+            // Accessing static field via an instance (allowed but not recommended)
+            Counter counter = new Counter();
+            System.out.println(counter.count); // Output: 3
+        }
+    }
+
+Characteristics of Static Fields:
+- Memory Allocation:
+	Static fields are stored in the method area of memory (stack).
+- Initialization:
+	Static fields are initialized when the class is loaded, before any
+    objects are created.
+- Shared State:
+	All instances of the class share the same static field. 
+    Modifying it through one instance affects all others.
+
+Static Constants:
+
+Static fields are often used for defining constants. 
+To ensure immutability, they are declared as final.
+
+Example:
+
+    public class MathConstants {
+        public static final double PI = 3.14159; // Static constant
+    }
+
+    System.out.println(MathConstants.PI); // Accessing directly via class name
+
+
+INSTANCE FIELDS AND METHODS
+---------------------------
+
+Instance fields are variables declared inside a class but 
+outside any method, constructor, or block.
+They are unique to each object of the class.
+
+Defining Instance Fields
+
+    public class Person {
+        String name;  // Instance field
+        int age;      // Instance field
+    }
+
+
+Initializing Instance Fields:
+
+If not explicitly initialized, instance fields are given default values:
+- null for object references.
+- 0 for numeric types.
+- false for boolean.
+
+Explicit Initialization: 
+Assign values directly at the point of declaration.
+
+    public class Person {
+        String name = "Unknown";  // Default name
+        int age = 0;              // Default age
+    }
+
+
+Constructor Initialization: 
+
+    public class Person {
+        String name;
+        int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+    }
+
+Accessing Instance Fields:
+
+    Person person = new Person("Alice", 30);
+    System.out.println(person.name); // Alice
+
+
+Instance Methods:
+
+Instance methods perform actions specific to an object.
+They require an object of the class to be invoked.
+
+Defining Instance Methods:
+
+    public class Person {
+        String name;
+        int age;
+
+        // Instance method
+        public void introduce() {
+            System.out.println("Hi, I'm " + name + " and I'm " + age + " years old.");
+        }
+    }
+
+Accessing Instance Methods:
+
+    Person person = new Person("Bob", 25);
+    person.introduce(); // Output: Hi, I'm Bob and I'm 25 years old.
+
+
+THIS
+----
+
+What Is this:
+- this refers to the current instance of the class where it is used.
+- Available in all non-static methods and constructors.
+- Differentiates between class fields and constructor parameters.
+- Method chaining and constructor chaining.
+
+
+Referring to Instance Fields:
+
+When a parameter or local variable has the same name as an instance field, 
+the this keyword is used to differentiate between them.
+
+Example:
+
+    (Ambiguity):
+    public class Person {
+        String name;
+
+        public void setName(String name) { // Parameter name shadows instance field
+            name = name; // Ambiguous: both refer to the parameter
+        }
+    }
+Example:
+    (Resolved):
+    public class Person {
+        String name;
+
+        public void setName(String name) {
+            this.name = name; // this.name refers to the instance field
+        }
+    }
+
+Calling Instance Methods:
+
+The this keyword is optional when calling instance methods.
+It is implied if not explicitly stated.
+
+Example:
+
+public class Person {
+    String name;
+
+    public void introduce() {
+        System.out.println("Hi, I'm " + name);
+    }
+
+    public void greet() {
+        introduce(); // Implicitly calls this.introduce()
+    }
+}
+Example (Explicit Reference):
+
+    public class Person {
+        String name;
+
+        public void introduce() {
+            System.out.println("Hi, I'm " + this.name);
+        }
+
+        public void greet() {
+            this.introduce(); // Explicit call to instance method
+        }
+    }
+
+Constructor Chaining:
+
+The this keyword is used to call one constructor from another within the same class. 
+This is called constructor chaining.
+
+Example:
+
+    public class Person {
+        String name;
+        int age;
+
+        public Person() {
+            this("Unknown", 0); // Calls the parameterized constructor
+        }
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+    }
+
+
+ACCESS CONTROL
+--------------
+
+Access Control for Classes:
+Top-Level Classes:
+Only two access modifiers are allowed:
+public: The class is accessible everywhere.
+Default (Package-Private): The class is accessible only within the same package.
+
+Example:
+
+    // Accessible everywhere
+    public class PublicClass { }
+
+    // Accessible only within the same package
+    class DefaultClass { }
+
+Access Control for Fields and Methods:
+
+Fields and methods can use all four access levels to restrict visibility as needed.
+
+public:
+- Accessible from anywhere.
+- Use sparingly for methods that are intended to be part of the class's public API.
+
+Example:
+
+    public class Car {
+        public String model;
+
+        public void drive() {
+            System.out.println("Driving " + model);
+        }
+    }
+
+protected:
+- Accessible within the same package and subclasses in other packages.
+- Useful for methods and fields meant to be inherited.
+
+Example:
+
+    public class Animal {
+        protected String name;
+
+        protected void makeSound() {
+            System.out.println(name + " is making a sound");
+        }
+    }
+
+Default (Package-Private):
+- Accessible only within the same package.
+- Useful for package-specific utilities.
+
+Example:
+
+    class PackageUtility {
+        void helperMethod() {
+            System.out.println("Helper method");
+        }
+    }
+
+private:
+- Accessible only within the same class.
+- Ideal for encapsulating fields.
+
+Example:
+
+    public class BankAccount {
+        private double balance;
+
+        public double getBalance() {
+            return balance;
+        }
+
+        private void updateBalance(double amount) {
+            balance += amount;
+        }
+    }
+
+Structuring Access Control:
+
+Encapsulation ensures that sensitive fields are not directly accessible 
+and are instead exposed through controlled methods.
+Steps:
+- Make fields private.
+- Provide public getters and setters for controlled access.
+- Add validation logic in setters to enforce rules.
+
+Example:
+
+    public class Person {
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            if (name != null && !name.isEmpty()) {
+                this.name = name;
+            }
+        }
+    }
+
+Minimize Public Access:
+- Keep fields private or protected.
+- Use public methods sparingly to expose only essential functionality.
+- Group public methods at the top of the class for clarity.
+
+Guidelines for Access Control
+
+Fields:
+- Use private for all fields unless there is a specific reason to expose them.
+- Use getters and setters to control access.
+
+Methods:
+- Use private for internal logic.
+- Use protected for methods designed to be overridden.
+- Use public sparingly for APIs intended for external use.
+
+Classes:
+- Prefer default (package-private).
+- Use public only for top-level classes intended to be used externally.
+
+
+Common Mistakes in Access Control:
+- Excessive Public fields/methods
+- No Access Control
+- Lack of Encapsulation
+- Improper use of protected
+
+Diffs in c#:
+- Access Control: C# introduces internal and protected internal for finer-grained control.
+- Static Members: C# provides static constructors and static classes.
+- Constructors: Both Java and C# support constructor chaining, but C# explicitly supports static constructors.
+- Properties: C# has built-in properties, while Java uses getter/setter methods.
