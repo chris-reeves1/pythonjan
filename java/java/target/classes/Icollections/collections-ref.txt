@@ -1,0 +1,317 @@
+COLLECTIONS
+-----------
+
+Drawbacks of arrays:
+1.	Cannot dynamically resize.
+2.	Limited built-in methods for operations (sorting, searching, etc.).
+
+Collections:
+
+A framework in Java (from java.util) that provides a dynamic way to manage groups of objects. 
+The newest implementation is with generics that enforce type safety.
+
+Characteristics:
+1.	Dynamic Sizing: Collections can grow or shrink at runtime.
+2.	Generic: Can hold objects of any type.
+3.	Flexible Data Types: Collections allow primitive types (like int) indirectly by wrapping them in wrapper classes (like Integer).
+
+Types:
+1.	List: Ordered, allows duplicates (e.g., ArrayList, LinkedList).
+2.	Set: Unordered, unique elements (e.g., HashSet, TreeSet).
+3.	Map: Key-value pairs (e.g., HashMap, TreeMap).
+
+Advantages Over Arrays:
+1.	Dynamic resizing.
+2.	Rich set of built-in methods.
+3.	Supports advanced features like sorting, filtering, etc.
+
+    List<String> list = new ArrayList<>();
+    list.add("Alice");
+    list.add("Bob");
+
+Collection: Dynamic Size
+
+    // Using ArrayList
+    List<Integer> dynamicList = new ArrayList<>();
+    dynamicList.add(1);
+    dynamicList.add(2);
+    dynamicList.add(3);
+    System.out.println("Element at index 2: " + dynamicList.get(2));
+
+    // Adding more elements
+    dynamicList.add(4);
+    dynamicList.add(5);
+    System.out.println("Updated List: " + dynamicList);
+
+
+What Are Generics:
+Generics are a language feature introduced in Java 5 that allows you to define classes, interfaces, and methods 
+with type parameters. They make it possible to specify the type of data a class or method can work with, 
+ensuring type safety at compile time.
+
+Key Features of Generics:
+- Type Parameters: Use <T> to represent a type.
+- Compile-Time Safety: Helps catch type-related errors at compile time.
+- Code Reusability: Write code that works with any type without duplication.
+- Elimination of Casting: Avoids the need for explicit casting when retrieving elements.
+
+Generics Applied to Collections:
+- Generics enhance collections by allowing them to enforce type safety.
+- For example, ArrayList<E> lets you specify the type of elements the ArrayList can store (<E> is the generic type parameter).
+
+Before Generics:
+- Collections like ArrayList were raw types, and you could store any type of object, leading to potential runtime errors.
+
+Example:
+
+ArrayList list = new ArrayList(); // No generics
+list.add("Hello");
+list.add(42); // Allowed, but unsafe
+
+
+ArrayList<String> list = new ArrayList<>(); // Type-safe
+list.add("Hello");
+// list.add(42); // Compile-time error
+
+
+ArrayList
+---------
+
+Add items to Arraylist:
+
+    public class Main {
+    public static void main(String[] args) {
+        ArrayList<String> cars = new ArrayList<String>();
+        cars.add("Volvo");
+        cars.add("BMW");
+        cars.add("Ford");
+        cars.add(0, "Mazda"); // Insert element at the beginning of the list (0)
+        System.out.println(cars);
+    }
+    }
+
+Access an item:
+
+    cars.get(0);
+
+Change an item:
+
+    cars.set(0, "Honda");
+
+Remove an item; 
+
+    cars.remove(0);
+
+Remove all elements:
+
+    cars.clear();
+
+Find the size of an arraylist:
+
+    cars.size();
+
+Iterate through an arraylist:
+
+    for (int i = 0; i < cars.size(); i++) {
+        System.out.println(cars.get(i));
+    }
+
+using enhanced foreach:
+
+    for (String i : cars) {
+      System.out.println(i);
+    }
+
+Sorting an arraylist:
+
+    Collections.sort(cars);  // Sort cars
+        for (String i : cars) {
+        System.out.println(i);
+        }
+
+
+ARRAYDEQUEUE
+
+------------
+
+A resizable array-based implementation of the Deque interface, which stands for Double-Ended Queue. 
+The ArrayDeque supports FIFO (First In, First Out) and LIFO (Last In, First Out) operations.
+
+
+    ArrayDeque<Integer> deque = new ArrayDeque<>();
+
+    ArrayDeque<Integer> deque = new ArrayDeque<>(10); // with specified size.
+
+    ArrayDeque<Integer> deque = new ArrayDeque<>(List.of(1, 2, 3));
+
+Methods:
+
+Add to head of queue:
+
+    deque.addFirst(10);
+    deque.offerFirst(20); // returns true if successful
+
+add to the Tail:
+
+    deque.addLast(30);
+    deque.offerLast(40);
+
+Remove from the Head:
+
+    deque.removeFirst(); //throws an exception if deque is empty
+    deque.pollFirst(); //null if deque is empty.
+
+Remove from the Tail:
+
+    deque.removeLast();
+    deque.pollLast();
+
+
+Accessing Elements without removing:
+
+    System.out.println(deque.getFirst()); throws an exception if deque is empty.
+    System.out.println(deque.peekFirst()); null if deque is empty.
+
+    System.out.println(deque.getLast());
+    System.out.println(deque.peekLast());
+
+Iterating:
+        
+        for (String element : deque) {
+                    System.out.println(element);
+                }
+
+Other Methods:
+- size(): Returns the number of elements in the deque.
+- isEmpty(): Checks if the deque is empty.
+- clear(): Removes all elements from the deque.
+- contains(Object o): Checks if the deque contains the specified element.
+- toArray(): Converts the deque into an array.
+
+Full Example:
+
+import java.util.ArrayDeque;
+
+public class ArrayDequeExample {
+    public static void main(String[] args) {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+
+        // Adding elements
+        deque.addFirst(10);
+        deque.addLast(20);
+        deque.offerFirst(5);
+        deque.offerLast(25);
+
+        System.out.println("Deque: " + deque); // Output: [5, 10, 20, 25]
+
+        // Accessing elements
+        System.out.println("First Element: " + deque.getFirst()); // Output: 5
+        System.out.println("Last Element: " + deque.getLast());   // Output: 25
+
+        // Removing elements
+        deque.removeFirst();
+        deque.removeLast();
+        System.out.println("After removal: " + deque); // Output: [10, 20]
+    }
+}
+
+HASHMAP
+-------
+
+Key Features of HashMap:
+- Key-Value Storage
+- Unique Keys
+- Allows Null (once for keys, multiple for values)
+- Unordered
+
+Creating a HashMap:
+
+import java.util.HashMap;
+
+    public class HashMapExample {
+        public static void main(String[] args) {
+            // Creating a HashMap
+            HashMap<String, Integer> map = new HashMap<>();
+
+            // Adding key-value pairs
+            map.put("Alice", 30);
+            map.put("Bob", 25);
+            map.put("Charlie", 35);
+
+            System.out.println(map); // Output: {Alice=30, Bob=25, Charlie=35}
+        }
+    }
+
+Common HashMap Methods:
+
+Adding or Updating Values
+
+    map.put("David", 40); // Add a new key-value pair
+    map.put("Alice", 32); // Update value for key "Alice"
+    System.out.println(map); // Output: {Alice=32, Bob=25, Charlie=35, David=40}
+
+    map.putIfAbsent("Eve", 28); // Add only if key doesn't exist
+    System.out.println(map); // Output: {Alice=32, Bob=25, Charlie=35, David=40, Eve=28}
+
+Accessing Values
+
+    System.out.println(map.get("Alice")); // Output: 32
+    System.out.println(map.get("Frank")); // Output: null
+
+    System.out.println(map.getOrDefault("Frank", 0)); // Output: 0  - default value if not found.
+
+Removing Values
+
+    map.remove("Bob"); // Removes key "Bob"
+    System.out.println(map); // Output: {Alice=32, Charlie=35, David=40, Eve=28}
+
+    map.remove("Charlie", 36); // Does nothing if the value doesn't match
+    System.out.println(map); // Output: {Alice=32, Charlie=35, David=40, Eve=28}
+
+Checking Keys and Values
+
+    System.out.println(map.containsKey("Alice")); // Output: true
+    System.out.println(map.containsValue(30));    // Output: false
+
+Iterating Through the HashMap
+
+keySet()	Returns a set view of the keys.
+values()	Returns a collection view of the values.
+entrySet()	Returns a set view of the key-value mappings.
+
+    // Iterating over keys
+    for (String key : map.keySet()) {
+        System.out.println("Key: " + key);
+    }
+
+    // Iterating over values
+    for (Integer value : map.values()) {
+        System.out.println("Value: " + value);
+    }
+
+    // Iterating over key-value pairs
+    for (HashMap.Entry<String, Integer> entry : map.entrySet()) {
+        System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+    }
+
+Other methods:
+- size()	Returns the number of key-value mappings.
+- isEmpty()	Returns true if the map contains no elements.
+- clear()	Removes all mappings from the map.
+
+Merging and Replacing
+
+    map.put("Alice", 30);
+    map.put("Bob", 25);
+
+    // Replace value for a specific key
+    map.replace("Alice", 35);
+    System.out.println(map); // Output: {Alice=35, Bob=25}
+
+    // Replace all values
+    map.replaceAll((key, value) -> value + 10);
+    System.out.println(map); // Output: {Alice=45, Bob=35}
+
+    // Merge example
+    map.merge("Bob", 10, (oldValue, newValue) -> oldValue + newValue);
+    System.out.println(map); // Output: {Alice=45, Bob=45}
