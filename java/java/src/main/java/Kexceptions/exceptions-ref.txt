@@ -1,0 +1,299 @@
+Exceptions
+----------
+Exception handling in Java is a mechanism to handle runtime errors, 
+allowing the normal flow of program execution to be maintained. 
+It uses a combination of try, catch, finally, and throw/throws keywords to 
+handle exceptions.
+
+Types of Exceptions:
+
+Checked Exceptions: 
+These are exceptions checked at compile-time. The programmer must handle these using a try-catch block or declare them 
+with the throws keyword. 
+
+Examples:
+- IOException
+- SQLException
+
+Unchecked Exceptions: 
+These are exceptions that occur at runtime and are not checked at compile time. 
+
+Examples:
+- ArithmeticException
+- NullPointerException
+- ArrayIndexOutOfBoundsException
+
+Errors: 
+These represent serious problems that applications should not try to handle (e.g., OutOfMemoryError, StackOverflowError).
+
+Keywords Used in Exception Handling:
+
+try: Block of code that might throw an exception.
+If an exception occurs, control is transferred to the nearest catch block.
+
+catch: Block of code that handles the exception.
+Each catch block specifies the type of exception it can handle.
+
+finally: Block of code that is always executed after the try block, regardless of whether an exception was thrown or caught.
+Useful for resource cleanup.
+
+throw: Used to explicitly throw an exception.
+
+throws: Declares the exceptions that a method can throw.
+
+Syntax and Workflow:
+
+Basic Syntax:
+
+    try {
+        // Code that may throw an exception
+    } catch (ExceptionType1 e1) {
+        // Handle ExceptionType1
+    } catch (ExceptionType2 e2) {
+        // Handle ExceptionType2
+    } finally {
+        // Cleanup code (e.g., closing resources)
+    }
+
+Example:
+
+Checked Exception Handling:
+
+    import java.io.*;
+
+    public class CheckedExceptionExample {
+        public static void main(String[] args) {
+            try {
+                FileReader file = new FileReader("nonexistentfile.txt");
+            } catch (FileNotFoundException e) {
+                System.out.println("File not found: " + e.getMessage());
+            } finally {
+                System.out.println("End of try-catch block.");
+            }
+        }
+    }
+
+Unchecked Exception Handling:
+
+    public class UncheckedExceptionExample {
+        public static void main(String[] args) {
+            try {
+                int result = 10 / 0; // Will throw ArithmeticException
+            } catch (ArithmeticException e) {
+                System.out.println("Cannot divide by zero: " + e.getMessage());
+            } finally {
+                System.out.println("Always executed block.");
+            }
+        }
+    }
+
+Using throw and throws:
+
+    public class ThrowExample {
+        public static void main(String[] args) {
+            try {
+                validateAge(15); // Will throw an exception
+            } catch (IllegalArgumentException e) {
+                System.out.println("Exception caught: " + e.getMessage());
+            }
+        }
+
+        public static void validateAge(int age) throws IllegalArgumentException {
+            if (age < 18) {
+                throw new IllegalArgumentException("Age must be 18 or above.");
+            }
+        }
+    }
+
+Best Practices:
+- Catch specific exceptions rather than generic ones like Exception.
+- Use finally for cleanup tasks like closing files or releasing resources.
+- Do not suppress exceptions silently (e.g., empty catch blocks).
+
+The try-with-resources statement: 
+Simplifies resource management and ensures that resources (like files, sockets, or database connections) are closed 
+automatically after they are used. 
+
+What is a Resource?
+A resource is any object that implements the AutoCloseable or Closeable interface. 
+These interfaces define a close() method that is called automatically when the resource is no longer needed.
+
+Examples of resources:
+
+File streams (e.g., FileInputStream, FileOutputStream)
+Buffered streams (e.g., BufferedReader, BufferedWriter)
+Database connections (e.g., Connection, Statement)
+Network sockets
+
+
+The resource is declared within the parentheses of the try statement. 
+Java ensures that the resource is closed automatically at the end of the try block.
+
+
+    try (ResourceType resource = new ResourceType()) {
+        // Code that uses the resource
+    } catch (ExceptionType e) {
+        // Handle exception
+    }
+
+How It Works:
+
+The resource is automatically closed after the try block, regardless of whether the try block completes normally or an exception occurs.
+No need to write a finally block.
+
+Example:
+
+Reading a File with Try-With-Resources:
+
+import java.io.*;
+
+    public class TryWithResourcesExample {
+        public static void main(String[] args) {
+            // Try-with-resources to handle file operations
+            try (BufferedReader reader = new BufferedReader(new FileReader("example.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading the file: " + e.getMessage());
+            }
+        }
+    }
+
+Note:
+- BufferedReader is a resource.
+- It implements the AutoCloseable interface, so it is automatically closed after the try block.
+
+Without Try-With-Resources (Manual Closing):
+
+    import java.io.*;
+
+    public class WithoutTryWithResources {
+        public static void main(String[] args) {
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader("example.txt"));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading the file: " + e.getMessage());
+            } finally {
+                // Manually close the resource
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        System.out.println("Error closing the file: " + e.getMessage());
+                    }
+                }
+            }
+        }
+    }
+
+BUBBLING-UP
+-----------
+
+In Java, when an exception occurs, it is thrown and the program looks for a matching catch block to handle it. 
+If the exception is not caught in the current method, it bubbles up (propagates) the call stack to the method that called 
+the current method. This process continues until the exception is either caught and handled or reaches the top of the call stack 
+(the main() method). If it is still not handled, the program terminates with a runtime error.
+
+    public class ExceptionPropagationExample {
+        public static void main(String[] args) {
+            try {
+                level1(); // Calling the first level
+            } catch (ArithmeticException e) {
+                System.out.println("Caught in main: " + e.getMessage());
+            }
+        }
+
+        public static void level1() {
+            level2(); // Calls the next level
+        }
+
+        public static void level2() {
+            level3(); // Calls the next level
+        }
+
+        public static void level3() {
+            // Throws an exception that propagates up the stack
+            int result = 10 / 0; // ArithmeticException
+        }
+    }
+
+
+Step-by-Step Explanation;
+
+level3():
+- The division by zero causes an ArithmeticException.
+- There is no try-catch block in level3() to handle it.
+- The exception is propagated to level2().
+
+level2():
+- Since level2() also has no try-catch block, the exception is propagated to level1().
+
+level1():
+- Similarly, no try-catch block exists in level1(), so the exception is propagated to main().
+  main():
+
+The try-catch block in main() catches the ArithmeticException and prints the error message.
+
+Unhandled Exception:
+
+If an exception is not caught anywhere in the call stack, it terminates the program and prints the stack trace.
+
+Example:
+
+    public class UnhandledExceptionExample {
+        public static void main(String[] args) {
+            level1();
+        }
+
+        public static void level1() {
+            level2();
+        }
+
+        public static void level2() {
+            level3();
+        }
+
+        public static void level3() {
+            int result = 10 / 0; // ArithmeticException
+        }
+    }
+
+Separate catch Blocks for Each Exception
+You can write multiple catch blocks after a try block, where each catch block handles a specific type of exception.
+
+Syntax:
+
+    try {
+        // Code that may throw exceptions
+    } catch (ExceptionType1 e) {
+        // Handle ExceptionType1
+    } catch (ExceptionType2 e) {
+        // Handle ExceptionType2
+    } catch (ExceptionType3 e) {
+        // Handle ExceptionType3
+    }
+
+Example:
+
+    public class MultipleCatchExample {
+        public static void main(String[] args) {
+            try {
+                int[] numbers = {1, 2, 3};
+                int result = 10 / 0; // Will throw ArithmeticException
+                System.out.println(numbers[5]); // Will throw ArrayIndexOutOfBoundsException
+            } catch (ArithmeticException e) {
+                System.out.println("Arithmetic Exception: " + e.getMessage());
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Array Index Out Of Bounds Exception: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("General Exception: " + e.getMessage());
+            }
+        }
+    }
