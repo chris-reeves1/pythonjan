@@ -1,0 +1,2 @@
+This is written to ouput file
+hello world
