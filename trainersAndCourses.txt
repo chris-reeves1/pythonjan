@@ -1,0 +1,19 @@
+Courses:
+Web Applications Development
+Systems Development Basics
+JavaScript JQuery and Angular JS
+Java Fundamentals
+ASP.Net MVC
+Java Intermediate
+Test Driven Programming
+Advanced C#
+Network Security
+Cloud computing
+
+Trainers:
+Baradaran Mike
+Potter Steve
+Maalik Sheikh
+Dehnadi Saeed
+Basha Yaroslav
+Burgess Andrew

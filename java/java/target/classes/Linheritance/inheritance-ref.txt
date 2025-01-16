@@ -1,0 +1,585 @@
+Inheritance technical
+
+How to Extend a Class:
+
+    class Superclass {
+        // fields, methods, and constructors
+    }
+
+    class Subclass extends Superclass {
+        // additional fields, methods, and constructors
+    }
+
+Rules for Extending a Class:
+-	A subclass can extend only one 
+-	A subclass automatically inherits all public and protected fields and methods of the superclass.
+-	Constructors are not inherited but can be explicitly called using super().
+
+What Can a Subclass Do:
+-	Inherit Fields and Methods
+-	Access fields and methods of the superclass (subject to access modifiers).
+-	Use them as-is or override methods.
+-	Override Methods:
+    	Use the @Override annotation to ensure you're correctly overriding a method.
+-	Use the super keyword to access fields and methods of the superclass explicitly.
+-	Call the superclass's constructor using super().
+-	Add New Fields and Methods
+
+Subclass objects can be treated as instances of the superclass:
+Examples
+Example 1: Basic Inheritance
+
+class Animal {
+    protected String name;
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }
+}
+class Dog extends Animal {
+    public void bark() {
+        System.out.println(name + " is barking.");
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.name = "Buddy";
+        dog.eat();  // Inherited method
+        dog.bark(); // Subclass-specific method
+    }
+}
+Output:
+Buddy is eating.
+Buddy is barking.
+
+
+
+
+
+Example 2: Method Overriding and super
+class Vehicle {
+    protected int speed;
+    public void displaySpeed() {
+        System.out.println("Speed: " + speed);
+    }
+}
+class Car extends Vehicle {
+    @Override
+    public void displaySpeed() {
+        System.out.println("Car's speed: " + speed);
+    }
+    public void showSuperSpeed() {
+        super.displaySpeed(); // Access superclass method
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.speed = 100;
+        car.displaySpeed(); // Calls overridden method
+        car.showSuperSpeed(); // Calls superclass method
+    }
+}
+Output:
+Car's speed: 100
+Speed: 100
+
+
+
+
+Focus on Fields
+Inherited Fields:
+-	Subclasses inherit all non-private fields from the superclass.
+-	Access to these fields depends on their access modifiers:
+Public: Accessible everywhere.
+Protected: Accessible within the package and by subclasses.
+Default (no modifier): Accessible only within the same package.
+Private: Not accessible directly.
+-	Field Shadowing
+	If a subclass declares a field with the same name as the superclass, it shadows the superclass's field.
+	You can use super.fieldName to access the superclass's field explicitly.
+
+All About Constructors:
+-	Constructors Are Not Inherited
+-	Subclasses do not inherit constructors but can call them using super().
+-	The first statement in a subclass constructor must be either super() or this().
+-	If not explicitly called, the default constructor of the superclass is invoked automatically or the constructor with no params (Otherwise super() must be used).
+
+Overloading Constructors:
+Superclass and subclass constructors can be overloaded (defined with different parameter lists).
+Example: Using super()
+class Animal {
+    protected String name;
+    public Animal(String name) {
+        this.name = name;
+    }
+}
+class Dog extends Animal {
+    public Dog(String name) {
+        super(name); // Call superclass constructor
+    }
+  public void display() {
+        System.out.println("Dog's name: " + name);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog("Buddy");
+        dog.display();
+    }
+}
+
+Output:
+Dog's name: Buddy
+
+To use this() in a subclass constructor instead of super(), you are creating a constructor chain within the subclass itself. This is often done when you 
+want to provide multiple constructors in the subclass, where one constructor delegates to another constructor of the same class.
+
+However, you must eventually call super() in one of the constructors, explicitly or implicitly, to ensure the superclass is properly initialized:
+
+Example:
+
+class Animal {
+    protected String name;
+    public Animal(String name) {
+        this.name = name;
+    }
+}
+class Dog extends Animal {
+    int age;
+    public Dog(String name) {
+        this(name, 3); // Call superclass constructor
+    }
+    public Dog(String name, int age){
+        super(name);
+        this.age = age;
+    }
+  public void display() {
+        System.out.println("Dog's name: " + name);
+    }
+}
+
+
+
+Access Rules:
+
+When to Use protected:
+When you want subclasses to have access to a field or method, but not unrelated classes.
+Example of protected:
+
+class Parent {
+    protected String message = "Hello from Parent!";
+}
+class Child extends Parent {
+    public void showMessage() {
+        System.out.println(message); // Accessing protected field
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Child child = new Child();
+        child.showMessage();
+    }
+}
+Output:
+Hello from Parent!
+
+
+
+
+
+
+
+
+
+Key Points to Remember:
+-	Use Access Modifiers Appropriately
+-	Use protected for fields/methods that subclasses need to access.
+-	Avoid exposing sensitive data directly; use getters and setters.
+-	Use super to call superclass methods and constructors explicitly.
+-	Avoid Constructor Chaining Pitfalls
+-	Ensure proper order when chaining constructors with super() and this().
+-	Minimize Field Shadowing
+-	Shadowing fields can lead to confusion. Prefer distinct field names in subclasses.
+-	Private Members Are Not Inherited
+-	If you need a subclass to access private members, use protected or provide public/protected getters.
+
+
+
+Brief look at exceptions and inheritance
+
+Exceptions are part of a well-defined hierarchy, and custom exceptions are typically 
+created by extending existing exception classes
+
+Custom exceptions are created by extending either:
+-	Exception (for checked exceptions).
+-	RuntimeException (for unchecked exceptions).
+
+Example 1: Custom Checked Exception
+// Base exception class
+class InvalidAgeException extends Exception {
+    public InvalidAgeException(String message) {
+        super(message); // Call the constructor of Exception
+    }
+}
+// Class using the custom exception
+class AgeValidator {
+    public void validateAge(int age) throws InvalidAgeException {
+        if (age < 18) {
+            throw new InvalidAgeException("Age must be 18 or older.");
+        }
+System.out.println("Age is valid.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        AgeValidator validator = new AgeValidator();
+        try {
+            validator.validateAge(16); // This will throw the exception
+        } catch (InvalidAgeException e) {
+            System.out.println("Caught Exception: " + e.getMessage());
+        }
+    }
+}
+Output:
+Caught Exception: Age must be 18 or older.
+
+Example 2: Custom Unchecked Exception
+// Base exception class
+class DivideByZeroException extends RuntimeException {
+    public DivideByZeroException(String message) {
+        super(message); // Call the constructor of RuntimeException
+    }
+}
+// Class using the custom exception
+class Calculator {
+    public int divide(int a, int b) {
+        if (b == 0) {
+            throw new DivideByZeroException("Division by zero is not allowed.");
+        }
+        return a / b;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        try {
+            System.out.println(calc.divide(10, 0)); // This will throw the exception
+        } catch (DivideByZeroException e) {
+            System.out.println("Caught Exception: " + e.getMessage());
+        }
+    }
+}
+Output:
+Caught Exception: Division by zero is not allowed.
+
+Using Inheritance to Extend Custom Exceptions
+You can create a hierarchy of custom exceptions to represent different types of errors, 
+making your exception-handling code more structured and reusable.
+
+Example 3: Exception Hierarchy
+// Base exception class
+class BankingException extends Exception {
+    public BankingException(String message) {
+        super(message);
+    }
+}
+
+// Specific exception subclasses
+class InsufficientFundsException extends BankingException {
+    public InsufficientFundsException(String message) {
+        super(message);
+    }
+}
+
+class UnauthorizedAccessException extends BankingException {
+    public UnauthorizedAccessException(String message) {
+        super(message);
+    }
+}
+
+// Class using custom exceptions
+class BankAccount {
+    private double balance = 1000;
+
+    public void withdraw(double amount) throws BankingException {
+        if (amount > balance) {
+            throw new InsufficientFundsException("Insufficient funds for withdrawal.");
+        }
+        balance -= amount;
+        System.out.println("Withdrawal successful. Remaining balance: " + balance);
+    }
+
+    public void accessAccount(String role) throws BankingException {
+        if (!role.equals("Admin")) {
+            throw new UnauthorizedAccessException("Access denied. Admin privileges required.");
+        }
+        System.out.println("Access granted.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount();
+
+        try {
+            account.withdraw(1500); // Throws InsufficientFundsException
+        } catch (BankingException e) {
+            System.out.println("Caught Exception: " + e.getMessage());
+        }
+
+        try {
+            account.accessAccount("User"); // Throws UnauthorizedAccessException
+        } catch (BankingException e) {
+            System.out.println("Caught Exception: " + e.getMessage());
+        }
+    }
+}
+Output:
+Caught Exception: Insufficient funds for withdrawal.
+Caught Exception: Access denied. Admin privileges required.
+
+
+
+
+
+
+
+
+
+
+Substitution 
+subtypes must be substitutable for their base types without altering the 
+correctness of the program. This principle ensures that objects of a superclass 
+can be replaced with objects of its subclasses, enabling polymorphism.
+
+Why Use Substitution of References:
+-	Flexibility:
+	Code that depends on a superclass can work with any of its subclasses,
+    making it more adaptable to future changes.
+-	Reusability:
+	You can write generic code that works for all subclass types, 
+    reducing duplication and improving maintainability.
+-	Polymorphism:
+	Substitution allows the same reference type to invoke different 
+    behaviors depending on the actual object it points to.
+-	Abstraction:
+	Clients depend on abstract types (like interfaces or superclasses) 
+    rather than concrete implementations, adhering to the Dependency Inversion Principle.
+
+Superclass References for Subclass Objects
+A superclass reference can hold a subclass object. This is called upcasting (implicit).
+
+class Animal {
+    public void speak() {
+        System.out.println("Animal speaks.");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void speak() {
+        System.out.println("Dog barks.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal myDog = new Dog(); // Substitution (upcasting)
+        myDog.speak(); 
+    }
+}
+Output:
+Dog barks.
+
+Substitutability with Lists and Arrays
+
+Lists:
+You can use substitution with Java's generic collections (e.g., List) to hold 
+a collection of objects from a subclass type, provided the reference is of the 
+superclass type.
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Animal {
+    public void speak() {
+        System.out.println("Animal speaks.");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void speak() {
+        System.out.println("Dog barks.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        List<Animal> animals = new ArrayList<>();
+        animals.add(new Dog()); // Substitution
+        for (Animal animal : animals) {
+            animal.speak(); // Polymorphism
+        }
+    }
+}
+Output:
+Dog barks.
+
+Arrays:
+Substitution also works with arrays, but care must be taken as array 
+covariance can lead to runtime exceptions.
+
+public class Main {
+    public static void main(String[] args) {
+        Animal[] animals = new Dog[2]; // Array covariance
+        animals[0] = new Dog();        // Valid
+        // animals[1] = new Animal(); // Throws ArrayStoreException
+    }
+}
+
+Basics of Casting
+Casting is used to convert an object reference to a specific type. 
+Java supports two types of casting in inheritance hierarchies:
+
+Upcasting (Safe, Implicit):
+-	Casting from a subclass type to a superclass type.
+-	No explicit cast is required because it’s always safe.
+
+Animal myDog = new Dog(); // Upcasting
+
+
+Downcasting (Explicit, Risky):
+-	Casting from a superclass type to a subclass type.
+-	Must be done explicitly because it can fail at runtime.
+
+Animal animal = new Dog(); // Upcasting
+Dog myDog = (Dog) animal;  // Downcasting  - now has aceess to all functionality        
+                                             not just overriden methods. 
+
+If the object isn’t actually of the subclass type, a ClassCastException is thrown.
+
+Avoiding ClassCastException:
+Use instanceof to Check Type Before Casting
+
+public class Main {
+    public static void main(String[] args) {
+        Animal animal = new Dog();
+
+        if (animal instanceof Dog) {
+            Dog myDog = (Dog) animal; // Safe casting
+            myDog.speak();
+        }
+    }
+}
+Output:
+Dog barks.
+
+Avoid casting altogether when working with collections by using generics:
+
+List<Dog> dogs = new ArrayList<>();
+dogs.add(new Dog());
+dogs.get(0).speak(); // No cast required
+
+Key Points to Remember:
+-	Substitution enables polymorphism, where superclass references can point to subclass objects.
+-	Use substitution for flexible and reusable code that operates on abstract types rather than specific implementations.
+-	Be cautious with downcasting and use instanceof to avoid ClassCastException.
+-	Polymorphism in lists and arrays simplifies managing collections of related objects.
+-	Prefer upcasting when possible and design code to minimize explicit downcasting.
+
+Is the Object a Dog or an Animal?
+The actual type of an object in an array does not change based on the array's type. 
+The object remains of its original type regardless of the type of 
+array it's placed into. 
+However, the way you access the object determines the behavior:
+
+Animal Array Containing a Dog:
+public class Main {
+    public static void main(String[] args) {
+        Animal[] animals = new Animal[2]; // Animal array
+        animals[0] = new Dog();           // Dog object stored in Animal array
+
+        animals[0].speak(); // Calls Dog's speak() method because the actual object is a Dog
+    }
+}
+
+The object itself is a Dog, even though it’s stored in an Animal[].
+When animals[0].speak() is called, polymorphism ensures that the method in the actual object (Dog) is executed, 
+not the one in the reference type (Animal).
+
+Simple explanation:
+If you put a Dog into a List<Animal>, it remains a Dog. 
+However, to access the Dog-specific features, you have to cast it back to 
+Dog because the reference type governs what the compiler allows you to do.
+
+
+
+
+
+
+
+Over-riding
+Overriding occurs when a subclass provides its own implementation of a method that is already defined in its superclass. The new method overrides the inherited method, and the behavior of the method is determined by the actual object type (runtime polymorphism).
+
+When to Use the @Override Annotation:
+The @Override annotation is a helpful tool in Java that ensures a method is correctly overriding a superclass method. It’s not mandatory, but it’s strongly recommended.
+
+Benefits of Using @Override:
+-	Compile-Time Safety: 
+o	If the method doesn’t match a method in the superclass (e.g., due to a typo in the method name or a mismatched signature), the compiler generates an error.
+-	Improved Code Clarity
+-	Future-Proofing
+
+Example:
+class Animal {
+    public void speak() {
+        System.out.println("Animal speaks.");
+    }
+}
+
+class Dog extends Animal {
+    @Override // Ensures we're overriding correctly
+    public void speak() {
+        System.out.println("Dog barks.");
+    }
+}
+
+
+
+
+Invoking Base-Class Functionality:
+Sometimes, you want the overriding method in the subclass to extend (not completely replace) the functionality of the superclass method. 
+
+class Animal {
+    public void speak() {
+        System.out.println("Animal speaks.");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void speak() {
+        super.speak(); // Call the base class's functionality
+        System.out.println("Dog barks."); // Extend functionality
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.speak();
+    }
+}
+Output:
+Animal speaks.
+Dog barks.
+
+NOTE:
+Invoke the base class functionality only when necessary. 
+Avoid redundant calls to super that don’t add value.
+Preserve the Base Class Intent
+Don’t override a method to break or contradict the base class’s expected behavior.

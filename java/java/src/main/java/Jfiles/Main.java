@@ -11,64 +11,70 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        System.out.println(new File("/home/ubuntu/example.txt").getAbsolutePath());
-
-        FileReader fileReader = new FileReader("/home/ubuntu/example.txt");
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-        String line;
-        while ((line = bufferedReader.readLine()) !=null) {
-            System.out.println(line);
-        }
-            bufferedReader.close();
-
-        // write to a file
-
-        FileWriter fileWriter = new FileWriter("output.txt");
+        String[] courses = readCSV(coursePath);
+        String[] trainers = readCSV(trainerPath);
+        
+        FileWriter fileWriter = new FileWriter("trainersAndCourses.txt");
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        bufferedWriter.write("This is written to ouput file");
+        bufferedWriter.write("Courses:");
         bufferedWriter.newLine();
-        bufferedWriter.write("hello world");
 
+        for(String line : courses){
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+        }
+        bufferedWriter.newLine();
+        bufferedWriter.write("Trainers:");
+        bufferedWriter.newLine();
+        for(String line : trainers){
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+        }
         bufferedWriter.close();
 
-        // nio (new input/output)
-
-        Path filePath = Paths.get("/home/ubuntu/example.txt");
+        JsonObject json = new JsonObject();
+        Path filePath = Paths.get("trainerCourse.txt");
         
-        //reading
-        for (String line1 : Files.readAllLines(filePath)){
-            System.out.println(line1);}
+        for(String line1 : Files.readAllLines(filePath)){
+            String[] pair = line1.split(",");
+            int trainerIndex = Integer.parseInt(pair[0]) - 1;
+            int courseIndex = Integer.parseInt(pair[1]) - 1;
 
-        //writing
-        Files.write(Paths.get("example.txt"), "hello again!".getBytes());
-
-        // Gson
-            Person person = new Person("chirs", 10);
+            json.addProperty(trainers[trainerIndex], courses[courseIndex]);
             Gson gson = new Gson();
-            String json = gson.toJson(person);
-            Files.write(Paths.get("data.json"), json.getBytes());
+            String jsonString = gson.toJson(json); // Convert JsonObject to a JSON string
 
-    }
-}
-class Person{
-    private String name;
-    private int age;
+        // Write the JSON string to a file
+        Files.write(Paths.get("data.json"), jsonString.getBytes());
 
-    Person(String name, int age){
-        this.name = name;
-        this.age = age;
+        }
+        //Files.write(Paths.get("data.json"), json.toString().getBytes());
     }
-}
 
     
 
+    public static String coursePath = "course.txt";
+    public static String trainerPath = "trainer.txt";
+    public static String trainerCoursePath = "trainerCourse.txt";
 
+    private static String[] readCSV(String inFile) throws IOException{
+        FileReader fileReader = new FileReader(inFile);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+        String content = bufferedReader.readLine();
+        bufferedReader.close();
+
+        return content.split(",");
+
+}
+
+}
 
 
 // filereader + buffered reader
