@@ -1,0 +1,55 @@
+Brief for Prison Simulator Project
+----------------------------------
+
+Objective:
+Create a prison simulation program with at least three classes that demonstrates 
+your understanding of key object-oriented programming principles including:
+- substitution 
+- inheritance 
+- composition 
+- abstract classes 
+- interfaces 
+- enums
+- methods
+
+Requirements
+------------
+
+Classes and Inheritance:
+
+Create at least three classes representing entities in your prison simulation.
+Use inheritance to create a base class and extend it for specific roles.
+
+Abstract Classes:
+
+Include an abstract class with common properties or methods for prison-related entities.
+Subclasses of this abstract class should implement specific behaviors.
+
+Interfaces:
+
+Define an interface that declares behaviors or actions shared across different classes.
+Have at least one class implement the interface.
+
+Enums:
+
+Use an enum to represent categories or states in your simulation.
+
+Composition:
+
+Use composition to represent relationships between objects.
+
+Substitution:
+
+Demonstrate substitutability by using a superclass reference to interact with 
+subclass objects.
+
+Deliverables
+------------
+
+Submit your code with clear comments explaining where each 
+OOP principle is demonstrated.
+
+Provide a short write-up (1 paragraph) explaining how you used inheritance, 
+composition, substitution, abstract classes, interfaces, and enums in your simulation.
+
+All code to be emailed to me. 
