@@ -13,22 +13,17 @@ public class Main {
             people.add(new Person(names[i], ages[i]));
         }
 
-        // Display people (unsorted)
         System.out.println("Unsorted:");
         displayPeople(people);
-
-        // Sort by age (natural order)
-        Collections.sort(people);
+Collections.sort(people);
         System.out.println("\nSorted by Age:");
-        displayPeople(people);
+   displayPeople(people);
 
-        // Sort by name using PersonNameComparer
         Collections.sort(people, new PersonComparetor());
         System.out.println("\nSorted by Name:");
         displayPeople(people);
     }
 
-    // Method to display people
     private static void displayPeople(ArrayList<Person> people) {
         for (Person person : people) {
             System.out.println(person);
