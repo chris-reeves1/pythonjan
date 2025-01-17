@@ -1,0 +1,429 @@
+Abstracts and interfaces
+------------------------
+
+Abstract Classes:
+- An abstract class is a class that cannot be instantiated on its own. 
+- It is declared using the abstract keyword 
+- Can include abstract methods (methods without implementation) 
+- Also concrete methods (methods with implementation).
+- It serves as a blueprint for other classes, enabling a hierarchical and modular design.
+
+abstract class Animal {
+    abstract void makeSound(); // Abstract method
+    void eat() { // Concrete method
+        System.out.println("This animal eats food.");
+    }
+}
+
+How It Works:
+- Abstract classes can define methods and properties common to all derived classes,
+  ensuring consistency.
+- They can declare abstract methods, forcing subclasses to provide their specific 
+  implementation.
+
+How It Improves Design:
+- Enforces a contract for derived classes, ensuring they implement specific behavior.
+- Promotes code reuse by allowing concrete methods that are shared among subclasses.
+- Provides flexibility to define default behaviors while allowing customization in subclasses.
+
+Problem of Having No Abstract Classes:
+- Code becomes less modular, as there is no structured way to define 
+  shared behavior and enforce it across subclasses.
+- Developers might duplicate code across different classes, 
+  leading to maintenance difficulties and errors.
+
+Why Use Abstract Classes?
+- Code Reusability 
+- Enforced Design
+- Polymorphism.
+
+Rules That Abstract Classes Follow:
+- An abstract class cannot be instantiated.
+- Abstract classes can have constructors, concrete methods, and fields.
+- Subclasses must either implement all abstract methods or also be declared abstract.
+- Abstract methods cannot have a body (implementation) in the abstract class.
+
+Problems with a Concrete Base Class:
+- A concrete base class cannot enforce that subclasses must implement specific methods.
+- It may allow instantiation of the base class, even if it doesn’t 
+  make sense in the application.
+- Adding or modifying methods in a concrete base class might require 
+  changes to all subclasses, leading to tight coupling.
+
+Examples
+
+Abstract Class with Abstract Method:
+
+abstract class Shape {
+    abstract double calculateArea();
+}
+
+class Circle extends Shape {
+    double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Rectangle extends Shape {
+    double width, height;
+
+    Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override
+    double calculateArea() {
+        return width * height;
+    }
+}
+
+Concrete Method in Abstract Class:
+
+abstract class Vehicle {
+    void start() {
+        System.out.println("Vehicle is starting.");
+    }
+    abstract void drive();
+}
+
+class Car extends Vehicle {
+    @Override
+    void drive() {
+        System.out.println("Car is driving.");
+    }
+}
+
+
+Interfaces
+----------
+
+Interfaces help achieve abstraction and define contracts for classes to implement. 
+They are widely used in design to define behaviors that classes can adopt, 
+irrespective of where the class resides in the hierarchy.
+
+Why Use Interfaces:
+- Abstraction: 
+    Interfaces allow you to define a contract that must be fulfilled.
+- Multiple Inheritance: 
+    Java doesn't support multiple inheritance but a class can implement 
+    multiple interfaces.
+- Loose Coupling: 
+    Interfaces decouple code, making it easier to modify implementations 
+    without affecting the code that depends on the interface.
+
+Basic Design of an Interface:
+
+- Interfaces declare methods but do not provide implementations
+- interfaces can have default methods (methods with a body) and static methods.
+
+Example:
+
+public interface Flyable {
+    void fly(); // Abstract method
+}
+
+An interface can extend other interfaces:
+
+public interface Bird extends Flyable {
+    void chirp();
+}
+
+Implementation:
+- A class uses the implements keyword to implement an interface.
+- The class must provide concrete implementations for all
+  the abstract methods in the interface unless the class is declared abstract.
+
+Example:
+
+public class Airplane implements Flyable {
+    @Override
+    public void fly() {
+        System.out.println("The airplane is flying.");
+    }
+}
+
+A class can implement multiple interfaces:
+
+public class Drone implements Flyable, Operable {
+    @Override
+    public void fly() {
+        System.out.println("The drone is flying.");
+    }
+
+    @Override
+    public void operate() {
+        System.out.println("The drone is being operated.");
+    }
+}
+
+Default methods do not need to be implemented:
+
+Interface with Default Method:
+
+public interface Animal {
+    void eat(); // Abstract method (must be implemented)
+
+    default void sleep() { // Default method (optional to implement)
+        System.out.println("This animal is sleeping.");
+    }
+}
+
+Implementing Class Without Overriding the Default Method:
+
+public class Dog implements Animal {
+    @Override
+    public void eat() {
+        System.out.println("The dog is eating.");
+    }
+}
+Using the Default Method:
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.eat();   // Outputs: The dog is eating.
+        dog.sleep(); // Outputs: This animal is sleeping. (default implementation)
+    }
+}
+Implementing Class With Overriding the Default Method:
+
+public class Cat implements Animal {
+    @Override
+    public void eat() {
+        System.out.println("The cat is eating.");
+    }
+
+    @Override
+    public void sleep() {
+        System.out.println("The cat sleeps quietly.");
+    }
+}
+
+Multiple Interfaces with Conflicting Default Methods:
+
+If a class implements multiple interfaces with the same default method, 
+the class must explicitly resolve the conflict by overriding the method.
+
+Example:
+
+public interface A {
+    default void show() {
+        System.out.println("A's default method");
+    }
+}
+
+public interface B {
+    default void show() {
+        System.out.println("B's default method");
+    }
+}
+
+public class MyClass implements A, B {
+    @Override
+    public void show() {
+        A.super.show(); // Explicitly choose A's implementation
+        System.out.println("MyClass's custom implementation");
+    }
+}
+
+Naming Convention: 
+
+The Name Should Show the Capabilities the Class Now Has.
+
+Interfaces are often named to describe the capability or behavior they provide, 
+using adjectives or verbs.
+
+This naming convention improves code readability and self-documentation.
+
+Its common to name interfaces with an i - iflyable, ioperable etc...
+
+Dependency Injection:
+
+Interfaces are commonly used in dependency injection to decouple
+implementation from design.
+
+public interface Logger {
+    void log(String message);
+}
+
+public class ConsoleLogger implements Logger {
+    @Override
+    public void log(String message) {
+        System.out.println("Console log: " + message);
+    }
+}
+
+public class App {
+    private final Logger logger;
+
+    public App(Logger logger) {
+        this.logger = logger;
+    }
+
+    public void run() {
+        logger.log("Application is running!");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Logger logger = new ConsoleLogger();
+        App app = new App(logger);
+        app.run(); // Outputs: Console log: Application is running!
+    }
+}
+
+
+Generics
+--------
+
+Some dont need to be coded (comparable), but you can write your own. 
+
+Generic interfaces in Java allow developers to define a contract (interface) that can operate on a specific data type specified during implementation. 
+They are part of Java's type-safe generic and are crucial for:
+
+Reusability: They allow code to be reused with different data types, reducing redundancy.
+Type Safety: Compile-time type checking helps prevent runtime errors.
+Flexibility: The same interface can be implemented for multiple types without needing separate interfaces for each type.
+
+
+implementing custom generic:
+
+public interface Container<T> {
+    void add(T item);
+    T get();
+}
+
+
+How to Implement Generic Interfaces:
+- Specify the type during implementation.
+- Use generics in the implementing class.
+
+Example:
+public class Main {
+public static void main(String[] args) {
+        IntegerContainer intContainer = new IntegerContainer();
+        intContainer.add(42); // Adding an integer
+        System.out.println("IntegerContainer contains: " + intContainer.get());
+
+        // Using GenericContainer with String
+        GenericContainer<String> stringContainer = new GenericContainer<>();
+        stringContainer.add("Hello!"); // Adding a string
+        System.out.println("GenericContainer (String) contains: " + stringContainer.get());
+
+        // Using GenericContainer with Double
+        GenericContainer<Double> doubleContainer = new GenericContainer<>();
+        doubleContainer.add(3.14159); // Adding a double
+        System.out.println("GenericContainer (Double) contains: " + doubleContainer.get());
+    }
+}
+
+interface Container<T> {
+    void add(T item);
+    T get();
+}
+
+class IntegerContainer implements Container<Integer> {
+    private Integer item;
+
+    @Override
+    public void add(Integer item) {
+        this.item = item;
+    }
+
+    @Override
+    public Integer get() {
+        return item;
+    }
+}
+
+class GenericContainer<T> implements Container<T> {
+    private T item;
+
+    @Override
+    public void add(T item) {
+        this.item = item;
+    }
+
+    @Override
+    public T get() {
+        return item;
+    }
+}
+
+
+comparable (built-in generic interface): 
+
+What Does Comparable Do?
+When a class implements the Comparable<T> interface, it can compare its own objects and define their natural order 
+(e.g., smallest to largest).
+
+This is useful for sorting, especially with Java tools like Collections.sort().
+
+
+public class Student implements Comparable<Student> {
+    private int id;
+    private String name;
+
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public int compareTo(Student other) {
+        return Integer.compare(this.id, other.id); // Compare by ID
+    }
+
+    // Getters for id and name (optional)
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+
+
+Sorting a List of Student:
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create a list of students
+        List<Student> students = new ArrayList<>();
+        students.add(new Student(3, "Alice"));
+        students.add(new Student(1, "Bob"));
+        students.add(new Student(2, "Charlie"));
+
+        // Sort the students (uses compareTo)
+        Collections.sort(students);
+
+        // Print the sorted list
+        for (Student student : students) {
+            System.out.println(student.getId() + ": " + student.getName());
+        }
+    }
+}
+Output:
+1: Bob
+2: Charlie
+3: Alice
+
+Why Comparable:
+Without Comparable, you’d have to write custom sorting logic every time you wanted to sort Student objects. 
+By implementing Comparable, you define the "default" way to compare Student objects in one place.
